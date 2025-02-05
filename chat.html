@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Live Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img id="user-avatar" alt="User">
+                <div class="user-info">
+                    <span id="user-name"></span>
+                    <span id="user-mobile"></span>
+                </div>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="Search or start new chat">
+            </div>
+
+            <div class="contacts">
+                <div class="contact" onclick="openChat('Vivek', 'Aiohoto.png')">
+                    <img src="Aiohoto.png" alt="Contact">
+                    <span>Vivek</span>
+                </div>
+                <div class="contact" onclick="openChat('Narendra', 'narendr5a.jpg')">
+                    <img src="narendr5a.jpg" alt="Contact">
+                    <span>Narendra</span>
+                </div>
+                <div class="contact" onclick="openChat('Shubham', 'shubham.jpg')">
+                    <img src="shubham.jpg" alt="Contact">
+                    <span>Shubham</span>
+                </div>
+
+                <div class="contact" onclick="openChat('Shreyash', 'shreyash.jpg')">
+                    <img src="shreyash.jpg" alt="Contact">
+                    <span>Shreyash</span>
+                </div>
+
+                <div class="contact" onclick="openChat('Shriraj', 'shriraj.jpg')">
+                    <img src="shriraj.jpg" alt="Contact">
+                    <span>Shriraj</span>
+                </div>
+
+                <div class="contact" onclick="openChat('Kalpesh', 'narendra.jpg')">
+                    <img src="narendra.jpg" alt="Contact">
+                    <span>Kalpesh</span>
+                </div>
+
+                <div class="contact" onclick="openChat('Sahil', 'shubham.jpg')">
+                    <img src="shubham.jpg" alt="Contact">
+                    <span>Sahil</span>
+                </div>
+
+                <div class="contact" onclick="openChat('Ishan', 'shriraj.jpg')">
+                    <img src="shriraj.jpg" alt="Contact">
+                    <span>Ishan</span>
+                </div>
+                <!-- Add other contacts here... -->
+            </div>
+        </div>
+
+
+
+
+        <!-- Chat Section -->
+        <div class="chat">
+            <div class="chat-header">
+                <div class="usernmephoto">
+                    <img id="chat-avatar" src="Aiohoto.png" alt="">
+                    <h3><span id="chat-name">Vivek</span></h3>
+                </div>
+                <!-- Search Box -->
+                <div class="chat-search-box">
+                    <i class="fa-solid fa-phone"></i>
+                    <i class="fa-solid fa-video"></i>
+                    <input type="text" id="chat-search-input" placeholder="Search">
+                </div>
+            </div>
+
+
+            <!-- chat-body -->
+            <div class="chat-body" id="chat-body"></div>
+
+
+            <div class="chat-footer">
+                <i class="fa-regular fa-face-smile" id="emoji-toggle"></i>
+                <i class="fa-solid fa-paperclip" id="points-toggle"></i>
+                <input type="text" id="message-input" placeholder="Type a message...">
+                <button id="send-btn">Send</button>
+            </div>
+
+            <!-- Emoji Popup (Initially Hidden) -->
+            <div id="emoji-popup" class="popup hidden">
+                <div class="emoji-list">
+                    <span>😊</span>
+                    <span>😅</span>
+                    <span>😂</span>
+                    <span>❤️</span>
+                    <span>😅</span>
+                    <span>😊</span>
+                    <span>😅</span>
+                    <span>😅</span>
+                    <span>😂</span>
+                    <span>❤️</span>
+                    <span>😅</span>
+                    <span>😊</span>
+                    <span>😅</span>
+                    <span>😂</span>
+                    <span>❤️</span>
+                    <span>😅</span>
+                </div>
+            </div>
+
+            <!-- Points List Popup (Initially Hidden) -->
+            <div id="points-popup" class="popup hidden">
+                <ul>
+                    <li><i class="fa-regular fa-images"></i>Photos & Videos</li>
+                    <li><i class="fa-solid fa-camera"></i>Camera</li>
+                    <li><i class="fa-solid fa-file"></i>&nbsp;Document</li>
+                    <li><i class="fa-regular fa-address-book"></i>Contact</li>
+                    <li><i class="fa-solid fa-square-poll-vertical"></i>&nbsp;Poll</li>
+                    <li><i class="fa-solid fa-pencil"></i>Drawing</li>
+                </ul>
+            </div>
+
+            <!-- FontAwesome Script -->
+            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        // Load User Details
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+            document.getElementById("user-name").innerText = user.name + " " + user.surname;
+            document.getElementById("user-mobile").innerText = user.mobile;
+            document.getElementById("user-avatar").src = user.profilePic;
+        } else {
+            window.location.href = "index.html";
+        }
+        // Function to switch the chat header with the selected contact
+        function openChat(contactName, avatar) {
+            document.getElementById('chat-name').innerText = contactName;
+            document.getElementById('chat-avatar').src = avatar;  // Update avatar with selected contact's image
+            document.getElementById('chat-body').innerHTML = "";  // Clear previous messages
+        }
+
+        // Send message function
+        document.getElementById("send-btn").addEventListener("click", function () {
+            const messageInput = document.getElementById("message-input");
+            const messageText = messageInput.value.trim();
+            if (messageText !== "") {
+                const chatBody = document.getElementById("chat-body");
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("message", "sent");
+                messageDiv.innerText = messageText;
+                chatBody.appendChild(messageDiv);
+                messageInput.value = "";
+                chatBody.scrollTop = chatBody.scrollHeight;  // Scroll to latest message
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get elements for toggling
+            const emojiToggle = document.getElementById('emoji-toggle');
+            const pointsToggle = document.getElementById('points-toggle');
+            const emojiPopup = document.getElementById('emoji-popup');
+            const pointsPopup = document.getElementById('points-popup');
+
+            // Toggle Emoji Popup
+            emojiToggle.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent click from closing the popups immediately
+                emojiPopup.classList.toggle('hidden'); // Toggle visibility of emoji popup
+                pointsPopup.classList.add('hidden'); // Hide points if emoji is shown
+            });
+
+            // Toggle Points Popup
+            pointsToggle.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent click from closing the popups immediately
+                pointsPopup.classList.toggle('hidden'); // Toggle visibility of points popup
+                emojiPopup.classList.add('hidden'); // Hide emoji if points are shown
+            });
+
+            // Close popups if clicked outside
+            document.addEventListener('click', (event) => {
+                if (!emojiPopup.contains(event.target) && !emojiToggle.contains(event.target)) {
+                    emojiPopup.classList.add('hidden');
+                }
+                if (!pointsPopup.contains(event.target) && !pointsToggle.contains(event.target)) {
+                    pointsPopup.classList.add('hidden');
+                }
+            });
+        });
+
+
+
+    </script>
+</body>
+
+</html>
